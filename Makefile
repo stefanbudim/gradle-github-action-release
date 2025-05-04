@@ -7,3 +7,6 @@ build:
 
 jar: 
 	./gradlew jar 
+
+test:
+	./gradlew test --warning-mode all
