@@ -27,6 +27,6 @@ jobs:
       with:
         tag_name: ${{ github.ref_name }}
         name: Release ${{ github.ref_name }}
-        files: build/libs/*.jar
+        files: app/build/libs/*.jar
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
