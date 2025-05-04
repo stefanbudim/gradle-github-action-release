@@ -1,0 +1,7 @@
+# Create a new release
+Tag your commit with a version number that matches `v1.0.0`
+git tag v1.0.0
+git push origin v1.0.0
+
+Once the tag is pushed, the `Create Release` workflow will automatically trigger.
+A new release will be created in the "Releases" tab of your repository, containing the generated JAR file as an asset.

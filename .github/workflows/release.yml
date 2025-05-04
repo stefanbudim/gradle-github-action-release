@@ -5,6 +5,9 @@ on:
     tags:
       - 'v*'  # triggers on version tags like v1.0.0
 
+permissions:
+  contents: write  # required to allow creating a release
+
 jobs:
   build-and-release:
     runs-on: ubuntu-latest
@@ -20,7 +23,7 @@ jobs:
         java-version: '17'  # change to your required version
 
     - name: Build JAR
-      run: ./gradlew clean build
+      run: ./gradlew build
 
     - name: Create Release
       uses: softprops/action-gh-release@v2
