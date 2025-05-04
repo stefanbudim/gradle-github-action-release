@@ -8,6 +8,8 @@
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     id 'application'
+    id 'java'
+    id 'maven-publish' // Enables publishing capabilities
 }
 
 java {
@@ -44,5 +46,37 @@ application {
 jar {
     manifest {
         attributes 'Main-Class': application.mainClass
+    }
+}
+
+
+publishing {
+    repositories {
+        maven {
+            name = 'GitHubPackages' // Or a name for your repository
+            url = uri('https://maven.pkg.github.com/stefanbudim/gradle-github-action-release') // Replace with your GitHub Packages URL
+            credentials {
+                username = System.getenv('GITHUB_ACTOR')
+                password = System.getenv('GITHUB_TOKEN')
+            }
+        }
+        // If publishing to Maven Central, you'd configure it differently
+        // maven {
+        //     name = 'MavenCentral'
+        //     url = uri('https://oss.sonatype.org/service/local/staging/deploy/maven2/')
+        //     credentials {
+        //         username = System.getenv('MAVEN_CENTRAL_USERNAME')
+        //         password = System.getenv('MAVEN_CENTRAL_PASSWORD')
+        //     }
+        // }
+    }
+    publications {
+        mavenJava(MavenPublication) {
+            groupId = project.group
+            artifactId = 'org.example.App' // Replace with your library's artifact ID
+            version = project.version
+
+            from components.java
+        }
     }
 }
