@@ -1,0 +1,48 @@
+name: Create Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*' # Trigger this workflow on pushes to tags matching the pattern vX.Y.Z
+
+permissions:
+  contents: write # Add this line to grant write permission for contents (including releases)
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Run Tests
+        run: ./gradlew test
+
+      - name: Build with Gradle
+        run: ./gradlew build
+
+      - name: Upload JAR as workflow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: app.jar
+          path: app/build/libs/*.jar
+
+      - name: Create GitHub Release
+        uses: actions/create-release@v1.1.4
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref_name }}
+          release_name: Release ${{ github.ref_name }}
+          body: |
+            See the attached assets for this release.
+          draft: false
+          prerelease: ${{ github.ref_name == 'v*.*.*-alpha*' || github.ref_name == 'v*.*.*-beta*' || github.ref_name == 'v*.*.*-rc*' }}
+          files: app/build/libs/*.jar
