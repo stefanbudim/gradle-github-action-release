@@ -45,4 +45,3 @@ jobs:
             See the attached assets for this release.
           draft: false
           prerelease: ${{ github.ref_name == 'v*.*.*-alpha*' || github.ref_name == 'v*.*.*-beta*' || github.ref_name == 'v*.*.*-rc*' }}
-          files: app/build/libs/*.jar
