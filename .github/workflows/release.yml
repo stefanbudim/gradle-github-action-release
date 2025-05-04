@@ -5,6 +5,9 @@ on:
     tags:
       - 'v*.*.*' # Trigger this workflow on pushes to tags matching the pattern vX.Y.Z
 
+permissions:
+  contents: write # Add this line to grant write permission for contents (including releases)
+
 jobs:
   build-and-release:
     runs-on: ubuntu-latest
@@ -32,7 +35,7 @@ jobs:
           path: app/build/libs/*.jar
 
       - name: Create GitHub Release
-        uses: actions/create-release@v1
+        uses: actions/create-release@v1.1.4
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
